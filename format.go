@@ -3,7 +3,7 @@ package gmf
 
 /*
 
-#cgo pkg-config: libavformat libavdevice libavfilter
+#cgo pkg-config: libavformat libavdevice
 
 #include <stdlib.h>
 #include "libavformat/avformat.h"
@@ -473,7 +473,11 @@ func (this *FmtCtx) SeekFrameAt(sec int64, streamIndex int) error {
 		return err
 	}
 
-	ist.CodecCtx().FlushBuffers()
+	ctx, err := ist.CodecCtx()
+	if err != nil {
+		return err
+	}
+	ctx.FlushBuffers()
 
 	return nil
 }
